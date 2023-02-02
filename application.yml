@@ -1,0 +1,20 @@
+project:
+  version: ${VERSION:local}
+
+server:
+  port: ${PORT:8080}
+
+logging:
+  file: 
+    name: ${LOG_PATH:/tmp/java.log}
+  level:
+    org:
+      springframework: ${LOG_LEVEL:INFO}
+
+
+datasources:
+  - name: postgres
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+    driverClassName: org.postgresql.Driver

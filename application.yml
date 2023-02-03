@@ -18,3 +18,8 @@ datasources:
     username: postgres
     password: postgres
     driverClassName: org.postgresql.Driver
+  - name: oracle
+    url: jdbc:oracle:thin:@localhost:1521/oracle
+    username: system
+    password: oracle
+    driverClassName: ""

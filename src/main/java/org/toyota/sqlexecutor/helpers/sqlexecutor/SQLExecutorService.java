@@ -20,7 +20,8 @@ public interface SQLExecutorService {
 
 	/**
 	 * Ejecuta un SP en el datasource parametro existente en el
-	 * {@link org.toyota.sqlexecutor.helpers.sqlexecutor.utils.DSManager}. Realiza el commit y el
+	 * {@link org.toyota.sqlexecutor.helpers.sqlexecutor.utils.DSManager}. Realiza
+	 * el commit y el
 	 * cerrado de la conexion al terminar de ejecutar.
 	 * 
 	 * @param sp
@@ -32,7 +33,8 @@ public interface SQLExecutorService {
 
 	/**
 	 * Ejecuta una query en el datasource parametro existente en el
-	 * {@link org.toyota.sqlexecutor.helpers.sqlexecutor.utils.DSManager}. Realiza el commit y el
+	 * {@link org.toyota.sqlexecutor.helpers.sqlexecutor.utils.DSManager}. Realiza
+	 * el commit y el
 	 * cerrado de la conexion al terminar de ejecutar.
 	 * 
 	 * @param query

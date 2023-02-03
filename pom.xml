@@ -70,11 +70,11 @@
 			<artifactId>postgresql</artifactId>
 			<version>42.5.2</version>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
-			<artifactId>ojdbc11</artifactId>
+			<artifactId>ojdbc8</artifactId>
 			<version>21.8.0.0</version>
-		</dependency> -->
+		</dependency>
 		<dependency>
 			<groupId>org.bspfsystems</groupId>
 			<artifactId>yamlconfiguration</artifactId>

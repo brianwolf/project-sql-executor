@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bspfsystems.yamlconfiguration.file.YamlConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ import org.toyota.sqlexecutor.services.SqlService;
 
 @Service
 public class SqlServiceImpl implements SqlService {
+
+    private static Logger logger = LoggerFactory.getLogger(SqlServiceImpl.class);
 
     @Autowired
     private DSManager dsManager;
@@ -37,16 +41,15 @@ public class SqlServiceImpl implements SqlService {
             @SuppressWarnings("unchecked")
             HashMap<String, Object> mapds = (HashMap<String, Object>) ds;
 
-            String url = mapds.get("url").toString();
-            String driverClassName = mapds.get("driverClassName").toString();
-            String username = mapds.get("username").toString();
-            String password = mapds.get("password").toString();
-
             SQLJdbcConnection sqlJdbcConnection = new SQLJdbcConnection();
-            sqlJdbcConnection.setUrl(url);
-            sqlJdbcConnection.setDriverClassName(driverClassName);
-            sqlJdbcConnection.setUsername(username);
-            sqlJdbcConnection.setPassword(password);
+            sqlJdbcConnection.setUrl(mapds.get("url").toString());
+            sqlJdbcConnection.setUsername(mapds.get("username").toString());
+            sqlJdbcConnection.setPassword(mapds.get("password").toString());
+
+            if (mapds.containsKey("driverClassName")) {
+                String driverClassName = mapds.get("driverClassName").toString();
+                sqlJdbcConnection.setDriverClassName(driverClassName);
+            }
 
             if (mapds.containsKey("initialSize")) {
                 Integer initialSize = Integer.valueOf(mapds.get("initialSize").toString());
@@ -66,10 +69,22 @@ public class SqlServiceImpl implements SqlService {
             String dsName = mapds.get("name").toString();
             dsManager.add(dsName, sqlJdbcConnection);
 
-            SQLQuery query = new SQLQuery("SELECT 1");
-            sqlExecutorService.execute(query, dsName);
+            try {
 
-            dsListOnline.add(dsName);
+                String stringQuery = sqlJdbcConnection.getUrl().contains("oracle")
+                        ? "select user from dual"
+                        : "SELECT 1";
+
+                SQLQuery query = new SQLQuery(stringQuery);
+                sqlExecutorService.execute(query, dsName);
+
+                logger.info(String.format("Connection successful datasource -> %s", dsName));
+                dsListOnline.add(dsName);
+
+            } catch (SQLException e) {
+                logger.error(String.format("Connection error datasource -> %s", dsName));
+                logger.error(e.getCause().toString());
+            }
         }
 
         return dsListOnline;

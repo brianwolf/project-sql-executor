@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.toyota.sqlexecutor.helpers.sqlexecutor.SQLExecutorService;
 import org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables.SQLQuery;
 import org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables.StoreProcedure;
+import org.toyota.sqlexecutor.helpers.sqlexecutor.model.results.SQLResult;
 import org.toyota.sqlexecutor.helpers.sqlexecutor.utils.DSManager;
 import org.toyota.sqlexecutor.helpers.sqlexecutor.utils.ResultBuilder;
 import org.toyota.sqlexecutor.helpers.sqlexecutor.utils.TypesConversor;
@@ -36,7 +38,7 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 	 */
 	private void logSPBeforeExecute(StoreProcedure sp) {
 
-		String parameters = sp.haveParameters() ? "Parameters: " + sp.getParametersMap().toString()
+		String parameters = sp.haveInParameters() ? "Parameters: " + sp.getInParams().toString()
 				: "without Parameters";
 
 		LOG.debug(String.format("SP: %s %s", sp.getFullName(), parameters));
@@ -74,22 +76,55 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 	 * @return
 	 * @throws SQLException
 	 */
-	private List<Map<String, Object>> getResultListMap(ResultSet resultSet) throws SQLException {
+	private SQLResult getResult(CallableStatement stmt, StoreProcedure sp) throws SQLException {
 
-		List<Map<String, Object>> resultMap = new ArrayList<Map<String, Object>>();
-		if (resultSet == null) {
-			return resultMap;
-		}
+		SQLResult result = new SQLResult();
 
-		while (resultSet.next()) {
+		if (stmt.getResultSet() != null) {
 
-			Map<String, Object> row = new LinkedHashMap<>();
-			for (String columnName : getColumnsNames(resultSet)) {
-				row.put(columnName, resultSet.getObject(columnName));
+			while (stmt.getResultSet().next()) {
+
+				Map<String, Object> row = new LinkedHashMap<>();
+				for (String columnName : getColumnsNames(stmt.getResultSet())) {
+					row.put(columnName, stmt.getResultSet().getObject(columnName));
+				}
+				result.getTable().add(row);
 			}
-			resultMap.add(row);
 		}
-		return resultMap;
+
+		if (sp.haveOutParameters()) {
+
+			for (String outName : sp.getOutParams()) {
+				result.getOuts().put(outName, stmt.getString(outName));
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 *
+	 * @param resultSet
+	 * @return
+	 * @throws SQLException
+	 */
+	private SQLResult getResult(PreparedStatement stmt) throws SQLException {
+
+		SQLResult result = new SQLResult();
+
+		if (stmt.getResultSet() != null) {
+
+			while (stmt.getResultSet().next()) {
+
+				Map<String, Object> row = new LinkedHashMap<>();
+				for (String columnName : getColumnsNames(stmt.getResultSet())) {
+					row.put(columnName, stmt.getResultSet().getObject(columnName));
+				}
+				result.getTable().add(row);
+			}
+		}
+
+		return result;
 	}
 
 	/**
@@ -101,11 +136,19 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 	 */
 	private CallableStatement buildCalleableStatement(Connection con, StoreProcedure sp) throws SQLException {
 
+		LOG.info(sp.getStatementCallString());
+
 		CallableStatement stmt = con.prepareCall(sp.getStatementCallString());
 
-		if (sp.haveParameters()) {
-			for (String key : sp.getParametersMap().keySet()) {
-				stmt.setString(key, TypesConversor.toString(sp.getParametersMap().get(key)));
+		if (sp.haveInParameters()) {
+			for (String key : sp.getInParams().keySet()) {
+				stmt.setString(key, TypesConversor.toString(sp.getInParams().get(key)));
+			}
+		}
+
+		if (sp.haveOutParameters()) {
+			for (String key : sp.getOutParams()) {
+				stmt.registerOutParameter(key, Types.VARCHAR);
 			}
 		}
 
@@ -113,10 +156,10 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 	}
 
 	@Override
-	public List<Map<String, Object>> execute(StoreProcedure sp, String dataSourceName) throws SQLException {
+	public SQLResult execute(StoreProcedure sp, String dataSourceName) throws SQLException {
 
 		Connection con = dsManager.get(dataSourceName).getConnection();
-		List<Map<String, Object>> result = execute(sp, con);
+		SQLResult result = execute(sp, con);
 
 		commit(con);
 		close(con);
@@ -125,10 +168,10 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 	}
 
 	@Override
-	public List<Map<String, Object>> execute(SQLQuery query, String dataSourceName) throws SQLException {
+	public SQLResult execute(SQLQuery query, String dataSourceName) throws SQLException {
 
 		Connection con = dsManager.get(dataSourceName).getConnection();
-		List<Map<String, Object>> result = execute(query, con);
+		SQLResult result = execute(query, con);
 
 		commit(con);
 		close(con);
@@ -142,7 +185,7 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 	}
 
 	@Override
-	public List<Map<String, Object>> execute(StoreProcedure sp, Connection con) throws SQLException {
+	public SQLResult execute(StoreProcedure sp, Connection con) throws SQLException {
 
 		logSPBeforeExecute(sp);
 		try {
@@ -151,7 +194,9 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 			CallableStatement stmt = buildCalleableStatement(con, sp);
 			stmt.execute();
 
-			List<Map<String, Object>> result = getResultListMap(stmt.getResultSet());
+			LOG.info(stmt.getString("salida"));
+
+			SQLResult result = getResult(stmt, sp);
 			return ResultBuilder.getResultChangedColumns(result, sp.getResultColumns());
 
 		} catch (Exception e) {
@@ -165,7 +210,7 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 	}
 
 	@Override
-	public List<Map<String, Object>> execute(SQLQuery query, Connection con) throws SQLException {
+	public SQLResult execute(SQLQuery query, Connection con) throws SQLException {
 
 		logQueryBeforeExecute(query);
 		try {
@@ -174,7 +219,7 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 			PreparedStatement stmt = con.prepareStatement(query.getQuery());
 			stmt.execute();
 
-			List<Map<String, Object>> result = getResultListMap(stmt.getResultSet());
+			SQLResult result = getResult(stmt);
 			return ResultBuilder.getResultChangedColumns(result, query.getResultColumns());
 
 		} catch (Exception e) {

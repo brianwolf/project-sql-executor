@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.toyota.sqlexecutor.helpers.sqlexecutor.model.results.SQLResult;
+
 public class ResultBuilder {
 
     /**
@@ -11,8 +13,9 @@ public class ResultBuilder {
      * @param resultColumns
      * @return
      */
-    private static Boolean canRenameColumns(List<Map<String, Object>> resultMap, List<String> resultColumns) {
-        return resultColumns != null && resultMap != null && !resultColumns.isEmpty() && !resultMap.isEmpty();
+    private static Boolean canRenameColumns(SQLResult result, List<String> resultColumns) {
+        return resultColumns != null && result.getTable() != null && !resultColumns.isEmpty()
+                && !result.getTable().isEmpty();
     }
 
     /**
@@ -20,21 +23,22 @@ public class ResultBuilder {
      * @param resultColumns
      * @return
      */
-    public static List<Map<String, Object>> getResultChangedColumns(List<Map<String, Object>> resultMap,
-                                                                    List<String> resultColumns) {
+    public static SQLResult getResultChangedColumns(SQLResult result, List<String> resultColumns) {
 
-        if (!canRenameColumns(resultMap, resultColumns)) {
-            return resultMap;
+        if (!canRenameColumns(result, resultColumns)) {
+            return result;
         }
 
-        List<Map<String, Object>> resultChangedNames = new ArrayList<>(resultMap);
+        SQLResult resultChangedNames = new SQLResult();
+        resultChangedNames.setTable(new ArrayList<>(result.getTable()));
 
-        List<String> listKeys = new ArrayList<>(resultMap.get(0).keySet());
+        List<String> listKeys = new ArrayList<>(result.getTable().get(0).keySet());
 
-        Integer iterations = resultColumns.size() > resultMap.size() ? resultColumns.size() - resultMap.size()
+        Integer iterations = resultColumns.size() > result.getTable().size()
+                ? resultColumns.size() - result.getTable().size()
                 : resultColumns.size();
 
-        for (Map<String, Object> mapChangedNames : resultChangedNames) {
+        for (Map<String, Object> mapChangedNames : resultChangedNames.getTable()) {
 
             for (int i = 0; i < iterations; i++) {
 

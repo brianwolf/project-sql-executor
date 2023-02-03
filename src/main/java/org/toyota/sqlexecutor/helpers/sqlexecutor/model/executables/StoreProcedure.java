@@ -28,7 +28,8 @@ public class StoreProcedure extends SQLExecutable {
 
 	private String schema;
 	private String name;
-	private Map<String, Object> parametersMap;
+	private Map<String, Object> inParams;
+	private List<String> outParams;
 	private TypeCall typeCall;
 
 	public StoreProcedure() {
@@ -41,14 +42,14 @@ public class StoreProcedure extends SQLExecutable {
 		super(new ArrayList<>());
 		this.schema = schema;
 		this.name = name;
-		this.parametersMap = parametersMap;
+		this.inParams = parametersMap;
 	}
 
 	public StoreProcedure(String schema, String name, Map<String, Object> parametersMap, String typeCall) {
 		super(new ArrayList<>());
 		this.schema = schema;
 		this.name = name;
-		this.parametersMap = parametersMap;
+		this.inParams = parametersMap;
 		this.typeCall = TypeCall.valueOf(typeCall);
 	}
 
@@ -58,12 +59,16 @@ public class StoreProcedure extends SQLExecutable {
 		super(resultColumns);
 		this.schema = schema;
 		this.name = name;
-		this.parametersMap = parametersMap;
+		this.inParams = parametersMap;
 		this.typeCall = TypeCall.valueOf(typeCall);
 	}
 
-	public Boolean haveParameters() {
-		return parametersMap != null && !parametersMap.isEmpty();
+	public Boolean haveInParameters() {
+		return inParams != null && !inParams.isEmpty();
+	}
+
+	public Boolean haveOutParameters() {
+		return outParams != null && !outParams.isEmpty();
 	}
 
 	public String getFullName() {
@@ -73,9 +78,22 @@ public class StoreProcedure extends SQLExecutable {
 	public String getStatementCallString() {
 
 		String paramsString = "";
-		if (haveParameters()) {
 
-			for (int i = 0; i < parametersMap.values().size(); i++) {
+		if (haveInParameters()) {
+
+			for (int i = 0; i < inParams.values().size(); i++) {
+				paramsString += "?, ";
+			}
+			paramsString = paramsString.substring(0, paramsString.length() - 2);
+		}
+
+		if (haveOutParameters()) {
+
+			if (haveInParameters()) {
+				paramsString += ", ";
+			}
+
+			for (int i = 0; i < outParams.size(); i++) {
 				paramsString += "?, ";
 			}
 			paramsString = paramsString.substring(0, paramsString.length() - 2);

@@ -2,11 +2,10 @@ package org.toyota.sqlexecutor.helpers.sqlexecutor;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
 
 import org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables.SQLQuery;
 import org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables.StoreProcedure;
+import org.toyota.sqlexecutor.helpers.sqlexecutor.model.results.SQLResult;
 
 /**
  * 
@@ -29,7 +28,7 @@ public interface SQLExecutorService {
 	 * @return
 	 * @throws SQLException
 	 */
-	List<Map<String, Object>> execute(StoreProcedure sp, String dataSourceName) throws SQLException;
+	SQLResult execute(StoreProcedure sp, String dataSourceName) throws SQLException;
 
 	/**
 	 * Ejecuta una query en el datasource parametro existente en el
@@ -42,7 +41,7 @@ public interface SQLExecutorService {
 	 * @return
 	 * @throws SQLException
 	 */
-	List<Map<String, Object>> execute(SQLQuery query, String dataSourceName) throws SQLException;
+	SQLResult execute(SQLQuery query, String dataSourceName) throws SQLException;
 
 	/**
 	 * Obtiene la conexion de un datasource agregado en el
@@ -64,7 +63,7 @@ public interface SQLExecutorService {
 	 * @return
 	 * @throws SQLException
 	 */
-	List<Map<String, Object>> execute(StoreProcedure sp, Connection con) throws SQLException;
+	SQLResult execute(StoreProcedure sp, Connection con) throws SQLException;
 
 	/**
 	 * Ejecuta una query usando la conexion por parametro. Este metodo es manual por
@@ -75,7 +74,7 @@ public interface SQLExecutorService {
 	 * @return
 	 * @throws SQLException
 	 */
-	List<Map<String, Object>> execute(SQLQuery query, Connection con) throws SQLException;
+	SQLResult execute(SQLQuery query, Connection con) throws SQLException;
 
 	/**
 	 * Realiza el commit en la conexion parametro. Es usado junto con los metodos

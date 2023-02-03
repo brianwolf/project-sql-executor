@@ -2,7 +2,6 @@ package org.toyota.sqlexecutor.controllers;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.toyota.sqlexecutor.helpers.sqlexecutor.SQLExecutorService;
 import org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables.SQLQuery;
 import org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables.StoreProcedure;
+import org.toyota.sqlexecutor.helpers.sqlexecutor.model.results.SQLResult;
 import org.toyota.sqlexecutor.services.SqlService;
 
 @RestController
@@ -39,7 +39,7 @@ public class SqlController {
     public ResponseEntity<?> executeQuery(@PathVariable String datasource, @RequestBody SQLQuery sqlQuery)
             throws SQLException {
 
-        List<Map<String, Object>> result = sqlExecutorService.execute(sqlQuery, datasource);
+        SQLResult result = sqlExecutorService.execute(sqlQuery, datasource);
 
         return ResponseEntity.status(200).body(result);
     }
@@ -48,7 +48,7 @@ public class SqlController {
     public ResponseEntity<?> executeProcedure(@PathVariable String datasource, @RequestBody StoreProcedure procedure)
             throws SQLException {
 
-        List<Map<String, Object>> result = sqlExecutorService.execute(procedure, datasource);
+        SQLResult result = sqlExecutorService.execute(procedure, datasource);
 
         return ResponseEntity.status(200).body(result);
     }

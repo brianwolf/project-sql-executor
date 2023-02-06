@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,6 +32,7 @@ public class StoreProcedure extends SQLExecutable {
 	private String name;
 	private Map<String, Object> inParams;
 	private List<String> outParams;
+	private String cursorParam;
 	private TypeCall typeCall;
 
 	public StoreProcedure() {
@@ -71,10 +74,12 @@ public class StoreProcedure extends SQLExecutable {
 		return outParams != null && !outParams.isEmpty();
 	}
 
+	@JsonIgnore
 	public String getFullName() {
 		return getSchema() + "." + getName();
 	}
 
+	@JsonIgnore
 	public String getStatementCallString() {
 
 		String paramsString = "";

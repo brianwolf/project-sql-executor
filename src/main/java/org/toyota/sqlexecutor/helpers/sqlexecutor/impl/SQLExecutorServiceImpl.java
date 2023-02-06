@@ -95,7 +95,22 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 		if (sp.haveOutParameters()) {
 
 			for (String outName : sp.getOutParams()) {
-				result.getOuts().put(outName, stmt.getString(outName));
+				if (!sp.getCursorParam().equals(outName)) {
+					result.getOuts().put(outName, stmt.getObject(outName));
+				}
+			}
+		}
+
+		if (sp.getCursorParam() != null) {
+
+			ResultSet resultsetCursor = (ResultSet) stmt.getObject(sp.getCursorParam());
+			while (resultsetCursor.next()) {
+
+				Map<String, Object> row = new LinkedHashMap<>();
+				for (String columnName : getColumnsNames(resultsetCursor)) {
+					row.put(columnName, resultsetCursor.getObject(columnName));
+				}
+				result.getTable().add(row);
 			}
 		}
 
@@ -147,8 +162,10 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 		}
 
 		if (sp.haveOutParameters()) {
-			for (String key : sp.getOutParams()) {
-				stmt.registerOutParameter(key, Types.VARCHAR);
+			for (String outParam : sp.getOutParams()) {
+
+				int type = outParam.equals(sp.getCursorParam()) ? Types.REF_CURSOR : Types.VARCHAR;
+				stmt.registerOutParameter(outParam, type);
 			}
 		}
 
@@ -193,8 +210,6 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 
 			CallableStatement stmt = buildCalleableStatement(con, sp);
 			stmt.execute();
-
-			LOG.info(stmt.getString("salida"));
 
 			SQLResult result = getResult(stmt, sp);
 			return ResultBuilder.getResultChangedColumns(result, sp.getResultColumns());

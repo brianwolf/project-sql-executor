@@ -1,16 +1,15 @@
-# Demo springboot java 17
+# Sql executor
 
-> Demo de proyecto base para java 17 con springboot 3
+> Herramienta para ejecutar SPs de diferentes base de datos y convertirlas en una API REST
 
  ![alt](docs/img/java.png)
-
 
 ## :gear: Requisitos
 
 * openjdk 17
-* Apache Maven 3.8.4 
+* Apache Maven 3.8.4
 
-## :tada: Uso
+## :package: Compilacion
 
 ```bash
 
@@ -19,12 +18,17 @@ mvn spring-boot:run
 
 # usando java
 mvn clean install
-java -jar target/demo-0.0.1-SNAPSHOT
+cp application.yml target/
+java -jar target/sql-executor-1.0.0-SNAPSHOT
 ```
 
-## :books: Referencias
+## :tada: Uso
 
-* [Iconos](https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md)
+1) Para levantar la aplicacion es necesario un archivo llamado **application.yml** con la configuracion de la app dejandolo en la raiz del jar, justo al lado
+
+2) Una vez levantada la api dirigirse a [localhost:8080/docs](localhost:8080/docs) para usar la API mediante swagger
+
+---
 
 ## :grin: Autor
 

@@ -28,6 +28,8 @@ java -jar target/sql-executor-1.0.0-SNAPSHOT
 
 2) Una vez levantada la api dirigirse a [localhost:8080/docs](localhost:8080/docs) para usar la API mediante swagger
 
+3) Ejemplos de la API REST [aca](docs/example.md)
+
 ---
 
 ## :grin: Autor

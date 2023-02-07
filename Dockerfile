@@ -26,5 +26,6 @@ ENV LOG_LEVEL=INFO
 ENV TZ America/Argentina/Buenos_Aires
 
 COPY --from=builder /home/target/*.jar .
+COPY application.yml .
 
 CMD java -jar *.jar

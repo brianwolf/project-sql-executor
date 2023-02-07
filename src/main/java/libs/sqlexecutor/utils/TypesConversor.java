@@ -1,4 +1,4 @@
-package org.toyota.sqlexecutor.helpers.sqlexecutor.utils;
+package libs.sqlexecutor.utils;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;

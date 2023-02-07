@@ -1,4 +1,4 @@
-package org.toyota.sqlexecutor.helpers.sqlexecutor.impl;
+package libs.sqlexecutor.impl;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -15,13 +15,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.SQLExecutorService;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables.SQLQuery;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables.StoreProcedure;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.results.SQLResult;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.utils.DSManager;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.utils.ResultBuilder;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.utils.TypesConversor;
+import libs.sqlexecutor.SQLExecutorService;
+import libs.sqlexecutor.model.executables.SQLQuery;
+import libs.sqlexecutor.model.executables.StoreProcedure;
+import libs.sqlexecutor.model.results.SQLResult;
+import libs.sqlexecutor.utils.DSManager;
+import libs.sqlexecutor.utils.ResultBuilder;
+import libs.sqlexecutor.utils.TypesConversor;
 
 @Service
 public class SQLExecutorServiceImpl implements SQLExecutorService {
@@ -31,35 +31,11 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 	@Autowired
 	private DSManager dsManager;
 
-	/**
-	 * Loguea el SP antes de ejecutarlo
-	 *
-	 * @param sp
-	 */
-	private void logSPBeforeExecute(StoreProcedure sp) {
-
-		String parameters = sp.haveInParameters() ? "Parameters: " + sp.getInParams().toString()
-				: "without Parameters";
-
-		LOG.debug(String.format("SP: %s %s", sp.getFullName(), parameters));
-	}
-
-	/**
-	 * Loguea la QUERY antes de ejecutarlo
-	 *
-	 * @param query
-	 */
 	private void logQueryBeforeExecute(SQLQuery query) {
 
 		LOG.debug(String.format("SQL QUERY: %s", query));
 	}
 
-	/**
-	 *
-	 * @param resultSet
-	 * @return
-	 * @throws SQLException
-	 */
 	private List<String> getColumnsNames(ResultSet resultSet) throws SQLException {
 
 		List<String> columnsNames = new ArrayList<>();
@@ -70,12 +46,6 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 		return columnsNames;
 	}
 
-	/**
-	 *
-	 * @param resultSet
-	 * @return
-	 * @throws SQLException
-	 */
 	private SQLResult getResult(CallableStatement stmt, StoreProcedure sp) throws SQLException {
 
 		SQLResult result = new SQLResult();
@@ -95,7 +65,7 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 		if (sp.haveOutParameters()) {
 
 			for (String outName : sp.getOutParams()) {
-				if (!sp.getCursorParam().equals(outName)) {
+				if (!outName.equals(sp.getCursorParam())) {
 					result.getOuts().put(outName, stmt.getObject(outName));
 				}
 			}
@@ -117,12 +87,6 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 		return result;
 	}
 
-	/**
-	 *
-	 * @param resultSet
-	 * @return
-	 * @throws SQLException
-	 */
 	private SQLResult getResult(PreparedStatement stmt) throws SQLException {
 
 		SQLResult result = new SQLResult();
@@ -142,13 +106,6 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 		return result;
 	}
 
-	/**
-	 *
-	 * @param con
-	 * @param sp
-	 * @return
-	 * @throws SQLException
-	 */
 	private CallableStatement buildCalleableStatement(Connection con, StoreProcedure sp) throws SQLException {
 
 		LOG.info(sp.getStatementCallString());
@@ -204,7 +161,6 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 	@Override
 	public SQLResult execute(StoreProcedure sp, Connection con) throws SQLException {
 
-		logSPBeforeExecute(sp);
 		try {
 			con.setAutoCommit(false);
 

@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.SQLExecutorService;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables.SQLQuery;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables.StoreProcedure;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.results.SQLResult;
+import libs.sqlexecutor.SQLExecutorService;
+import libs.sqlexecutor.model.executables.SQLQuery;
+import libs.sqlexecutor.model.executables.StoreProcedure;
+import libs.sqlexecutor.model.results.SQLResult;
 import org.toyota.sqlexecutor.services.SqlService;
 
 @RestController

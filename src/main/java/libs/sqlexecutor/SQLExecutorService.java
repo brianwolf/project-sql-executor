@@ -1,17 +1,17 @@
-package org.toyota.sqlexecutor.helpers.sqlexecutor;
+package libs.sqlexecutor;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables.SQLQuery;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables.StoreProcedure;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.results.SQLResult;
+import libs.sqlexecutor.model.executables.SQLQuery;
+import libs.sqlexecutor.model.executables.StoreProcedure;
+import libs.sqlexecutor.model.results.SQLResult;
 
 /**
  * 
  * Se debe usar con un "@Autowired" de springboot y habiendo cargado los
  * datasource previamente en el
- * {@link org.toyota.sqlexecutor.helpers.sqlexecutor.utils.DSManager}
+ * {@link libs.sqlexecutor.utils.DSManager}
  * 
  * @version: 2.0.3
  */
@@ -19,7 +19,7 @@ public interface SQLExecutorService {
 
 	/**
 	 * Ejecuta un SP en el datasource parametro existente en el
-	 * {@link org.toyota.sqlexecutor.helpers.sqlexecutor.utils.DSManager}. Realiza
+	 * {@link libs.sqlexecutor.utils.DSManager}. Realiza
 	 * el commit y el
 	 * cerrado de la conexion al terminar de ejecutar.
 	 * 
@@ -32,7 +32,7 @@ public interface SQLExecutorService {
 
 	/**
 	 * Ejecuta una query en el datasource parametro existente en el
-	 * {@link org.toyota.sqlexecutor.helpers.sqlexecutor.utils.DSManager}. Realiza
+	 * {@link libs.sqlexecutor.utils.DSManager}. Realiza
 	 * el commit y el
 	 * cerrado de la conexion al terminar de ejecutar.
 	 * 
@@ -45,7 +45,7 @@ public interface SQLExecutorService {
 
 	/**
 	 * Obtiene la conexion de un datasource agregado en el
-	 * {@link org.toyota.sqlexecutor.helpers.sqlexecutor.utils.DSManager}.
+	 * {@link libs.sqlexecutor.utils.DSManager}.
 	 * 
 	 * @param dataSourceName
 	 * @return

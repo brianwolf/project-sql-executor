@@ -1,4 +1,4 @@
-package libs.sqlexecutor.model.connections;
+package org.toyota.sqlexecutor.helpers.sqlexecutor.model.connections;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

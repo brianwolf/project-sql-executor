@@ -1,10 +1,10 @@
-package libs.sqlexecutor.utils;
+package org.toyota.sqlexecutor.helpers.sqlexecutor.utils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import libs.sqlexecutor.model.results.SQLResult;
+import org.toyota.sqlexecutor.helpers.sqlexecutor.model.results.SQLResult;
 
 public class ResultBuilder {
 

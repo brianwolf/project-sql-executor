@@ -82,8 +82,8 @@ public class SqlServiceImpl implements SqlService {
                 dsListOnline.add(dsName);
 
             } catch (SQLException e) {
-                logger.error(String.format("Connection error datasource -> %s", dsName));
-                logger.error(e.getCause().toString());
+                logger.warn(String.format("Connection error datasource -> %s", dsName));
+                logger.warn(e.getCause().toString());
             }
         }
 

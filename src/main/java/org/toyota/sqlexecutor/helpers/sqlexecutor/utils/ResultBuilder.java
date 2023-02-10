@@ -14,8 +14,8 @@ public class ResultBuilder {
      * @return
      */
     private static Boolean canRenameColumns(SQLResult result, List<String> resultColumns) {
-        return resultColumns != null && result.getTable() != null && !resultColumns.isEmpty()
-                && !result.getTable().isEmpty();
+        return resultColumns != null && result.getResultset() != null && !resultColumns.isEmpty()
+                && !result.getResultset().isEmpty();
     }
 
     /**
@@ -30,15 +30,15 @@ public class ResultBuilder {
         }
 
         SQLResult resultChangedNames = new SQLResult();
-        resultChangedNames.setTable(new ArrayList<>(result.getTable()));
+        resultChangedNames.setResultset(new ArrayList<>(result.getResultset()));
 
-        List<String> listKeys = new ArrayList<>(result.getTable().get(0).keySet());
+        List<String> listKeys = new ArrayList<>(result.getResultset().get(0).keySet());
 
-        Integer iterations = resultColumns.size() > result.getTable().size()
-                ? resultColumns.size() - result.getTable().size()
+        Integer iterations = resultColumns.size() > result.getResultset().size()
+                ? resultColumns.size() - result.getResultset().size()
                 : resultColumns.size();
 
-        for (Map<String, Object> mapChangedNames : resultChangedNames.getTable()) {
+        for (Map<String, Object> mapChangedNames : resultChangedNames.getResultset()) {
 
             for (int i = 0; i < iterations; i++) {
 

@@ -58,7 +58,7 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 				for (String columnName : getColumnsNames(stmt.getResultSet())) {
 					row.put(columnName, stmt.getResultSet().getObject(columnName));
 				}
-				result.getTable().add(row);
+				result.getResultset().add(row);
 			}
 		}
 
@@ -80,7 +80,7 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 				for (String columnName : getColumnsNames(resultsetCursor)) {
 					row.put(columnName, resultsetCursor.getObject(columnName));
 				}
-				result.getTable().add(row);
+				result.getResultset().add(row);
 			}
 		}
 
@@ -99,7 +99,7 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 				for (String columnName : getColumnsNames(stmt.getResultSet())) {
 					row.put(columnName, stmt.getResultSet().getObject(columnName));
 				}
-				result.getTable().add(row);
+				result.getResultset().add(row);
 			}
 		}
 

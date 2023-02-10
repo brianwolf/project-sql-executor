@@ -14,11 +14,11 @@ import lombok.Data;
 @Builder
 public class SQLResult {
 
-    private List<Map<String, Object>> table;
+    private List<Map<String, Object>> resultset;
     private Map<String, Object> outs;
 
     public SQLResult() {
-        this.table = new ArrayList<>();
+        this.resultset = new ArrayList<>();
         this.outs = new HashMap<>();
     }
 }

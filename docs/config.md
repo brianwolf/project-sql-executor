@@ -1,4 +1,4 @@
-# Configuracion de application properties 
+# Configuracion del application.yml
 
 ## Configuraciones del proyecto
 

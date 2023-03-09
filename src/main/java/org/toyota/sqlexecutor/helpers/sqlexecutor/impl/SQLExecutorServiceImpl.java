@@ -113,8 +113,8 @@ public class SQLExecutorServiceImpl implements SQLExecutorService {
 		CallableStatement stmt = con.prepareCall(sp.getStatementCallString());
 
 		if (sp.haveInParameters()) {
-			for (String key : sp.getInParams().keySet()) {
-				stmt.setString(key, TypesConversor.toString(sp.getInParams().get(key)));
+			for (int i = 0; i < sp.getInParams().size(); i++) {
+				stmt.setString(i, TypesConversor.toString(sp.getInParams().get(i)));
 			}
 		}
 

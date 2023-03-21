@@ -2,6 +2,7 @@ package org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -29,7 +30,7 @@ public class StoreProcedure extends SQLExecutable {
 
 	private String schema;
 	private String name;
-	private List<String> inParams;
+	private Map<String, Object> inParams;
 	private List<String> outParams;
 	private String cursorParam;
 	private TypeCall typeCall;
@@ -40,14 +41,14 @@ public class StoreProcedure extends SQLExecutable {
 		this.typeCall = TypeCall.CALL;
 	}
 
-	public StoreProcedure(String schema, String name, List<String> inParams) {
+	public StoreProcedure(String schema, String name, Map<String, Object> inParams) {
 		super(new ArrayList<>());
 		this.schema = schema;
 		this.name = name;
 		this.inParams = inParams;
 	}
 
-	public StoreProcedure(String schema, String name, List<String> inParams, String typeCall) {
+	public StoreProcedure(String schema, String name, Map<String, Object> inParams, String typeCall) {
 		super(new ArrayList<>());
 		this.schema = schema;
 		this.name = name;
@@ -56,7 +57,7 @@ public class StoreProcedure extends SQLExecutable {
 	}
 
 	@Builder
-	public StoreProcedure(List<String> resultColumns, String schema, String name, List<String> inParams,
+	public StoreProcedure(List<String> resultColumns, String schema, String name, Map<String, Object> inParams,
 			String typeCall) {
 		super(resultColumns);
 		this.schema = schema;

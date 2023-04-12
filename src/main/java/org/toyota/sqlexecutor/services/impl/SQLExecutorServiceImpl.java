@@ -1,4 +1,4 @@
-package org.toyota.sqlexecutor.helpers.sqlexecutor.impl;
+package org.toyota.sqlexecutor.services.impl;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -15,13 +15,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.SQLExecutorService;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables.SQLQuery;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables.StoreProcedure;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.results.SQLResult;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.utils.DSManager;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.utils.ResultBuilder;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.utils.TypesConversor;
+import org.toyota.sqlexecutor.models.executables.SQLQuery;
+import org.toyota.sqlexecutor.models.executables.StoreProcedure;
+import org.toyota.sqlexecutor.models.results.SQLResult;
+import org.toyota.sqlexecutor.services.SQLExecutorService;
+import org.toyota.sqlexecutor.utils.DSManager;
+import org.toyota.sqlexecutor.utils.ResultBuilder;
+import org.toyota.sqlexecutor.utils.TypesConversor;
 
 @Service
 public class SQLExecutorServiceImpl implements SQLExecutorService {

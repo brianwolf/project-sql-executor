@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.SQLExecutorService;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.connections.SQLJdbcConnection;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables.SQLQuery;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.utils.DSManager;
+import org.toyota.sqlexecutor.models.connections.SQLJdbcConnection;
+import org.toyota.sqlexecutor.models.executables.SQLQuery;
+import org.toyota.sqlexecutor.services.SQLExecutorService;
 import org.toyota.sqlexecutor.services.SqlService;
+import org.toyota.sqlexecutor.utils.DSManager;
 
 @Service
 public class SqlServiceImpl implements SqlService {

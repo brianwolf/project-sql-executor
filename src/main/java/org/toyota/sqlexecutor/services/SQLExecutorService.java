@@ -1,11 +1,11 @@
-package org.toyota.sqlexecutor.helpers.sqlexecutor;
+package org.toyota.sqlexecutor.services;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables.SQLQuery;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables.StoreProcedure;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.results.SQLResult;
+import org.toyota.sqlexecutor.models.executables.SQLQuery;
+import org.toyota.sqlexecutor.models.executables.StoreProcedure;
+import org.toyota.sqlexecutor.models.results.SQLResult;
 
 /**
  * 

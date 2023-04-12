@@ -1,4 +1,4 @@
-package org.toyota.sqlexecutor.helpers.sqlexecutor.model.executables;
+package org.toyota.sqlexecutor.models.executables;
 
 import java.util.ArrayList;
 import java.util.List;

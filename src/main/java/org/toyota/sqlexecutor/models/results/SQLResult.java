@@ -1,4 +1,4 @@
-package org.toyota.sqlexecutor.helpers.sqlexecutor.model.results;
+package org.toyota.sqlexecutor.models.results;
 
 import java.util.ArrayList;
 import java.util.HashMap;

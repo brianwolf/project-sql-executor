@@ -1,4 +1,4 @@
-package org.toyota.sqlexecutor.helpers.sqlexecutor.utils;
+package org.toyota.sqlexecutor.utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,8 +10,8 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.connections.SQLJdbcConnection;
-import org.toyota.sqlexecutor.helpers.sqlexecutor.model.connections.SQLJndiConnection;
+import org.toyota.sqlexecutor.models.connections.SQLJdbcConnection;
+import org.toyota.sqlexecutor.models.connections.SQLJndiConnection;
 
 @Service
 public class DSManager {

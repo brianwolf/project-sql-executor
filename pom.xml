@@ -9,7 +9,7 @@
 		<version>3.0.1</version>
 		<relativePath />
 	</parent>
-	<groupId>com.java</groupId>
+	<groupId>toyota.com.java</groupId>
 	<artifactId>sql-executor</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<name>sql-executor</name>
